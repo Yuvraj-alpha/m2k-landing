@@ -46,7 +46,7 @@ const CARD_VARIANTS = [
 
 export default function KitchenSinkPage() {
   return (
-    <main className="mx-auto w-full max-w-5xl px-6 py-16">
+    <div className="mx-auto w-full max-w-5xl px-6 py-16">
       <header className="mb-12">
         <p className="text-brand-amber font-mono text-xs tracking-[0.2em] uppercase">
           Phase 2 · Design system
@@ -206,6 +206,6 @@ export default function KitchenSinkPage() {
           </GlassPlate>
         </GlassCard>
       </section>
-    </main>
+    </div>
   );
 }

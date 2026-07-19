@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Inter } from "next/font/google";
 
+import { WhatsAppFab } from "@/components/common/whatsapp-fab";
 import { LiquidBackdrop } from "@/components/glass/liquid-backdrop";
+import { SiteFooter } from "@/components/layout/site-footer";
+import { SiteHeader } from "@/components/layout/site-header";
 import { siteConfig } from "@/config/site";
 import "@/styles/globals.css";
 
@@ -55,7 +58,28 @@ export default function RootLayout({
             source every glass surface refracts. Fixed to the viewport, so it
             lights content continuously as the page scrolls. */}
         <LiquidBackdrop />
-        {children}
+
+        {/* First focusable element on the page. The header has several links
+            before the content starts, so keyboard users need a way past them. */}
+        <a
+          href="#main"
+          className="focus:glass-surface-strong sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100 focus:not-sr-only focus:rounded-lg focus:px-4 focus:py-2 focus:text-sm focus:font-medium"
+        >
+          Skip to content
+        </a>
+
+        <SiteHeader />
+
+        {/* The single <main> landmark for the whole site — pages render their
+            sections directly rather than nesting another <main>, which would
+            be invalid and would give screen readers two "main" regions.
+            flex-1 pins the footer to the bottom on short pages. */}
+        <main id="main" className="flex-1">
+          {children}
+        </main>
+
+        <SiteFooter />
+        <WhatsAppFab />
       </body>
     </html>
   );

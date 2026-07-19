@@ -18,7 +18,12 @@ export interface SiteConfig {
   tagline: string;
   description: string;
   url: string;
-  founded: number;
+  /**
+   * Years of leadership experience in plastic packaging — NOT a company
+   * founding date. The source material claims experience, not incorporation,
+   * and the two must not be conflated in copy.
+   */
+  experienceYears: number;
   address: SiteAddress;
   /** E.164 format — required for tel: links and LocalBusiness JSON-LD. */
   phones: readonly string[];

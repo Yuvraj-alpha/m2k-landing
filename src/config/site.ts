@@ -16,7 +16,13 @@ export const siteConfig = {
   // TODO: update once the production domain is live.
   url: "https://m2kpackpro.in",
 
-  founded: 1995,
+  // The legacy site says "backed by experienced leaders in plastic packaging
+  // for the past 30 years". That is the leadership's experience — it does NOT
+  // establish when M2K Packpro itself was founded, so no "Since <year>" claim
+  // appears anywhere on this site.
+  // TODO: ask M2K for the actual incorporation year; if they have one, an
+  // "Established <year>" line is stronger trust signal than "30 years".
+  experienceYears: 30,
 
   address: {
     street: "Daba Road, Industrial Area",
