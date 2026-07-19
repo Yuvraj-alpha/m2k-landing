@@ -1,0 +1,74 @@
+/* ---------------------------------------------------------------------------
+ * globals.css — composition root for styling.
+ *
+ * Import order is load-bearing. Tailwind v4 resolves cascade layers in import
+ * order, and the Next.js docs warn that dev and prod ordering can differ, so
+ * do not let an import sorter reorder this block.
+ *
+ * Colour lives in colors.css. The glass material lives in glass.css.
+ * This file holds only typography, radii, and base-element rules.
+ * ------------------------------------------------------------------------- */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "./colors.css";
+@import "./glass.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-archivo);
+  --font-mono: ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+    /* Next 16 no longer force-overrides smooth scrolling on navigation; the
+       data-scroll-behavior attribute on <html> is what re-enables the
+       instant scroll-to-top behaviour. See layout.tsx. */
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    /* The backdrop blobs are fixed and full-bleed; without this a rubber-band
+       overscroll reveals the raw substrate edge. */
+    overscroll-behavior-y: none;
+  }
+
+  /* Display face for headings. Archivo's expanded cut echoes the wide
+     industrial lockup of the M2K logo. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading tracking-tight;
+    font-variation-settings: "wdth" 112;
+  }
+
+  /* Spec tables carry the real product data and must stay tabular-aligned. */
+  table {
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}

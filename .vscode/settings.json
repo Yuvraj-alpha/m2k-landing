@@ -1,0 +1,14 @@
+{
+  // Tailwind v4 at-rules (@theme, @apply, @custom-variant, @utility) are not
+  // known to VS Code's built-in CSS linter. The Tailwind extension validates
+  // them properly; this just stops the false "Unknown at rule" warnings.
+  "css.lint.unknownAtRules": "ignore",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  // Import order in src/styles/globals.css is load-bearing — see the comment
+  // at the top of that file. Do not let the editor reorder it.
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "never"
+  }
+}

@@ -1,0 +1,153 @@
+/* ---------------------------------------------------------------------------
+ * colors.css — the single source of truth for colour in this site.
+ *
+ * Nothing else should hardcode a colour. Components reference semantic tokens
+ * (bg-background, text-muted-foreground, bg-brand) so that light/dark and any
+ * future rebrand are one-file changes.
+ *
+ * Layout:
+ *   1. Brand constants  — literal hex, sampled from the M2K logo/catalogue
+ *   2. @theme inline    — exposes tokens as Tailwind utilities
+ *   3. :root            — light mode semantic values
+ *   4. .dark            — dark mode semantic values (this site's default)
+ * ------------------------------------------------------------------------- */
+
+/* 1. Brand constants -------------------------------------------------------
+ * Kept as literal hex because these are print-matched brand values, not tones
+ * derived from a scale. Do not "improve" these without sign-off from M2K.  */
+:root {
+  --m2k-red: #b21f24; /* logo wordmark + primary action */
+  --m2k-red-lit: #d93a40; /* hover, focus ring, specular tint */
+  --m2k-amber: #fdb813; /* catalogue accent, underlines, certifications */
+  --m2k-ink: #2d2d2d; /* original body colour from the legacy site */
+}
+
+/* 2. Tailwind utility exposure -------------------------------------------- */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Brand: bg-brand, text-brand-amber, ring-brand-lit, … */
+  --color-brand: var(--m2k-red);
+  --color-brand-lit: var(--m2k-red-lit);
+  --color-brand-amber: var(--m2k-amber);
+  --color-brand-ink: var(--m2k-ink);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* 3. Light mode ------------------------------------------------------------
+ * Secondary art direction. Substrate is a warm off-white so that the glass
+ * layer (white + blur) still separates from the page behind it — pure #fff
+ * would make frosted panels invisible.                                      */
+:root {
+  --background: oklch(0.968 0.002 265);
+  --foreground: oklch(0.18 0.004 265);
+  --card: oklch(0.995 0 0);
+  --card-foreground: oklch(0.18 0.004 265);
+  --popover: oklch(0.995 0 0);
+  --popover-foreground: oklch(0.18 0.004 265);
+  --primary: var(--m2k-red);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.93 0.003 265);
+  --secondary-foreground: oklch(0.22 0.004 265);
+  --muted: oklch(0.93 0.003 265);
+  /* 0.47 is the darkest tone that still reads as "muted" while holding
+     4.5:1 against both --background and a frosted panel over it. */
+  --muted-foreground: oklch(0.47 0.005 265);
+  --accent: oklch(0.92 0.004 265);
+  --accent-foreground: oklch(0.22 0.004 265);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.2 0.004 265 / 12%);
+  --input: oklch(0.2 0.004 265 / 16%);
+  --ring: var(--m2k-red-lit);
+
+  --chart-1: var(--m2k-red);
+  --chart-2: var(--m2k-amber);
+  --chart-3: oklch(0.55 0.02 265);
+  --chart-4: oklch(0.7 0.015 265);
+  --chart-5: oklch(0.4 0.02 265);
+
+  --sidebar: oklch(0.995 0 0);
+  --sidebar-foreground: oklch(0.18 0.004 265);
+  --sidebar-primary: var(--m2k-red);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.92 0.004 265);
+  --sidebar-accent-foreground: oklch(0.22 0.004 265);
+  --sidebar-border: oklch(0.2 0.004 265 / 12%);
+  --sidebar-ring: var(--m2k-red-lit);
+
+  --radius: 0.75rem;
+}
+
+/* 4. Dark mode — the site's default and primary art direction --------------
+ * Near-black with a faint cool cast, so the warm brand light bleeding through
+ * the backdrop blobs reads as *light* rather than as a colour tint.         */
+.dark {
+  --background: oklch(0.09 0.004 265);
+  --foreground: oklch(0.97 0.002 265);
+  --card: oklch(0.16 0.005 265);
+  --card-foreground: oklch(0.97 0.002 265);
+  --popover: oklch(0.14 0.005 265);
+  --popover-foreground: oklch(0.97 0.002 265);
+  /* Brand red on near-black is only ~3.9:1, so it is used as a *surface*
+     (with white text on it) and never as body text on the substrate. */
+  --primary: var(--m2k-red);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.22 0.005 265);
+  --secondary-foreground: oklch(0.97 0.002 265);
+  --muted: oklch(0.22 0.005 265);
+  /* 0.72 clears 4.5:1 on the substrate *and* on glass-over-substrate. */
+  --muted-foreground: oklch(0.72 0.004 265);
+  --accent: oklch(0.26 0.006 265);
+  --accent-foreground: oklch(0.97 0.002 265);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 11%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: var(--m2k-red-lit);
+
+  --chart-1: var(--m2k-red-lit);
+  --chart-2: var(--m2k-amber);
+  --chart-3: oklch(0.72 0.02 265);
+  --chart-4: oklch(0.55 0.02 265);
+  --chart-5: oklch(0.85 0.01 265);
+
+  --sidebar: oklch(0.12 0.005 265);
+  --sidebar-foreground: oklch(0.97 0.002 265);
+  --sidebar-primary: var(--m2k-red);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.26 0.006 265);
+  --sidebar-accent-foreground: oklch(0.97 0.002 265);
+  --sidebar-border: oklch(1 0 0 / 11%);
+  --sidebar-ring: var(--m2k-red-lit);
+}
