@@ -36,13 +36,16 @@
 }
 
 .dark {
-  --glass-tint: 6%;
-  --glass-tint-strong: 11%;
-  --glass-edge: 12%;
-  --glass-top-light: 18%;
-  --glass-under-shade: 22%;
-  --glass-saturate: 160%;
-  --glass-plate: 42%;
+  /* Raised from 6/11/12 after the first visual pass: against this substrate
+     the panels were too close to the background to read as separate material,
+     and the four variants were indistinguishable from each other. */
+  --glass-tint: 9%;
+  --glass-tint-strong: 16%;
+  --glass-edge: 18%;
+  --glass-top-light: 28%;
+  --glass-under-shade: 28%;
+  --glass-saturate: 180%;
+  --glass-plate: 38%;
 }
 
 @layer components {
@@ -118,17 +121,40 @@
     opacity: 1;
   }
 
-  /* Edge refraction. Applies the SVG turbulence filter (defined once in
-     LiquidFilterDefs) to a *border-only* pseudo-element, so the displacement
-     bends the edge without smearing the text inside the card. */
-  .glass-refract::before {
+  /* Directional edge light — the brightest thing on a glass panel is the edge
+     where light enters the material.
+
+     This replaced an SVG feTurbulence/feDisplacementMap approach. That was the
+     original plan, but it failed in practice: displacing a 1px border either
+     produced high-frequency noise that read as a torn edge, or — once damped
+     enough to avoid that — produced no visible refraction while still throwing
+     stray displaced fragments outside the card bounds. A gradient border is
+     cheaper, artefact-free, and reads more like glass than the filter did.
+
+     The double-mask with `exclude` is the standard gradient-border trick: paint
+     the padding box, then knock out the content box, leaving only the ring. */
+  .glass-edge-light::before {
     content: "";
     position: absolute;
-    inset: -1px;
+    inset: 0;
     border-radius: inherit;
+    padding: 1px;
     pointer-events: none;
-    border: 1px solid color-mix(in oklab, white 16%, transparent);
-    filter: url(#m2k-liquid-edge);
+    background: linear-gradient(
+      145deg,
+      color-mix(in oklab, white 50%, transparent) 0%,
+      color-mix(in oklab, white 8%, transparent) 30%,
+      transparent 55%,
+      color-mix(in oklab, white 22%, transparent) 100%
+    );
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
   }
 
   /* "Stretch" hover — the film elongating under tension. Deliberately
@@ -142,6 +168,66 @@
 
   .glass-stretch:hover {
     transform: scaleX(1.02) scaleY(1.005);
+  }
+}
+
+/* --- Backdrop -------------------------------------------------------------
+ * The lit substrate the glass refracts. Three slow-drifting blobs.
+ *
+ * These are CSS animations rather than JS so the whole backdrop can render as
+ * a server component with no hydration cost, and so the drift runs on the
+ * compositor. Only `transform` is animated — never `filter`, whose blur radius
+ * would force a full re-rasterisation every frame. */
+@layer components {
+  .liquid-blob {
+    position: absolute;
+    border-radius: 9999px;
+    /* Blur is set once and never animated. */
+    filter: blur(120px);
+    /* Hint the compositor once; paired with a fixed parent so it doesn't
+       promote a new layer per scroll. */
+    will-change: transform;
+  }
+
+  .liquid-blob-a {
+    animation: m2k-drift-a 38s ease-in-out infinite alternate;
+  }
+
+  .liquid-blob-b {
+    animation: m2k-drift-b 47s ease-in-out infinite alternate;
+  }
+
+  .liquid-blob-c {
+    animation: m2k-drift-c 61s ease-in-out infinite alternate;
+  }
+}
+
+/* Deliberately different periods (38/47/61s, near-coprime) so the three blobs
+   never resynchronise into an obvious loop. */
+@keyframes m2k-drift-a {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(12vw, 8vh, 0) scale(1.18);
+  }
+}
+
+@keyframes m2k-drift-b {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.1);
+  }
+  to {
+    transform: translate3d(-14vw, -6vh, 0) scale(0.92);
+  }
+}
+
+@keyframes m2k-drift-c {
+  from {
+    transform: translate3d(0, 0, 0) scale(0.95);
+  }
+  to {
+    transform: translate3d(8vw, -12vh, 0) scale(1.25);
   }
 }
 
@@ -164,13 +250,22 @@
   }
 
   .glass-sheen::after,
-  .glass-refract::before {
+  .glass-edge-light::before {
     display: none !important;
   }
 }
 
-/* Users who ask for less motion keep the material but lose the movement. */
+/* Users who ask for less motion keep the material but lose the movement.
+   The blobs stay — they are the lighting, not an animation — they just stop
+   drifting. */
 @media (prefers-reduced-motion: reduce) {
+  .liquid-blob-a,
+  .liquid-blob-b,
+  .liquid-blob-c {
+    animation: none !important;
+    will-change: auto;
+  }
+
   .glass-stretch {
     transition: none !important;
   }

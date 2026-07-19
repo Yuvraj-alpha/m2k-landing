@@ -11,13 +11,8 @@ import { siteConfig } from "@/config/site";
 export default function HomePage() {
   return (
     <main className="relative flex min-h-dvh items-center justify-center overflow-hidden p-6">
-      {/* Stand-in for the animated LiquidBackdrop built in phase 2. Static
-          blobs are enough to give the glass something to refract. */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
-        <div className="bg-brand/25 absolute -top-40 -left-32 size-144 rounded-full blur-[120px]" />
-        <div className="bg-brand-amber/15 absolute -right-32 -bottom-40 size-128 rounded-full blur-[120px]" />
-      </div>
-
+      {/* The backdrop now lives in the root layout, so it is shared by every
+          route rather than re-declared per page. */}
       <section className="glass-surface glass-sheen glass-stretch relative w-full max-w-xl rounded-2xl p-10">
         <p className="text-brand-amber font-mono text-xs tracking-[0.2em] uppercase">
           Phase 1 · Scaffold complete

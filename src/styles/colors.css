@@ -127,8 +127,12 @@
   --secondary: oklch(0.22 0.005 265);
   --secondary-foreground: oklch(0.97 0.002 265);
   --muted: oklch(0.22 0.005 265);
-  /* 0.72 clears 4.5:1 on the substrate *and* on glass-over-substrate. */
-  --muted-foreground: oklch(0.72 0.004 265);
+  /* MEASURED, not estimated. 0.72 was assumed to clear 4.5:1 and did not —
+     rendered samples came back at 3.72-4.38 against glass sitting over the
+     lit areas of the backdrop. 0.80 (~sRGB 200) clears 4.5:1 against the
+     brightest glass-over-blob case measured. Re-measure if the backdrop
+     alphas or --glass-tint change. */
+  --muted-foreground: oklch(0.8 0.004 265);
   --accent: oklch(0.26 0.006 265);
   --accent-foreground: oklch(0.97 0.002 265);
   --destructive: oklch(0.704 0.191 22.216);

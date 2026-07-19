@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Inter } from "next/font/google";
 
+import { LiquidBackdrop } from "@/components/glass/liquid-backdrop";
 import { siteConfig } from "@/config/site";
 import "@/styles/globals.css";
 
@@ -49,7 +50,13 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {/* Decorative, rendered once for the whole document: this is the light
+            source every glass surface refracts. Fixed to the viewport, so it
+            lights content continuously as the page scrolls. */}
+        <LiquidBackdrop />
+        {children}
+      </body>
     </html>
   );
 }
