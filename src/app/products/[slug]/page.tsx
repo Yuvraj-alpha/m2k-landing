@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { CtaBand } from "@/app/components/cta-band";
 import { Container } from "@/components/common/container";
+import { MediaFrame } from "@/components/common/media-frame";
 import { GlassButton } from "@/components/glass/glass-button";
 import { GlassCard } from "@/components/glass/glass-card";
 import { GlassPlate } from "@/components/glass/glass-plate";
+import { getProductMedia } from "@/config/media";
 import {
   confirmedSpecs,
   getProduct,
@@ -56,121 +59,149 @@ export default async function ProductPage({ params }: Props) {
   const others = productsInOrder.filter((p) => p.slug !== product.slug);
 
   return (
-    <Container className="py-16 sm:py-24">
-      <nav aria-label="Breadcrumb" className="text-muted-foreground text-sm">
-        <ol className="flex items-center gap-2">
-          <li>
-            <Link href="/products" className="hover:text-foreground">
-              Products
-            </Link>
-          </li>
-          <li aria-hidden>/</li>
-          <li className="text-foreground">{product.shortName}</li>
-        </ol>
-      </nav>
+    <>
+      <Container className="py-16 sm:py-24">
+        <nav aria-label="Breadcrumb" className="text-muted-foreground text-sm">
+          <ol className="flex items-center gap-2">
+            <li>
+              <Link href="/products" className="hover:text-foreground">
+                Products
+              </Link>
+            </li>
+            <li aria-hidden>/</li>
+            <li className="text-foreground">{product.shortName}</li>
+          </ol>
+        </nav>
 
-      <header className="mt-6 max-w-3xl">
-        <h1 className="text-4xl font-extrabold text-balance sm:text-5xl">
-          {product.name}
-        </h1>
-        <p className="text-brand-amber mt-3 text-lg">{product.tagline}</p>
-        <p className="text-muted-foreground mt-5 text-lg leading-relaxed">
-          {product.description}
-        </p>
-      </header>
+        <div className="mt-6 grid items-center gap-10 lg:grid-cols-2">
+          <header>
+            <h1 className="text-4xl font-extrabold text-balance sm:text-5xl">
+              {product.name}
+            </h1>
+            <p className="text-brand-amber mt-3 text-lg">{product.tagline}</p>
+            <p className="text-muted-foreground mt-5 text-lg leading-relaxed">
+              {product.description}
+            </p>
+          </header>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-3">
-        {/* Specifications. `self-start` stops the grid stretching this card to
+          <MediaFrame
+            asset={getProductMedia(product.slug)}
+            eager
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="aspect-video w-full"
+          />
+        </div>
+
+        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          {/* Specifications. `self-start` stops the grid stretching this card to
             match the taller applications/features column, which left a large
             dead gap under the CTA. */}
-        <GlassCard size="lg" edgeLight className="lg:col-span-1 lg:self-start">
-          <h2 className="text-lg font-extrabold">Specifications</h2>
-          <GlassPlate className="mt-4 p-4">
-            <table className="w-full text-sm">
-              <caption className="sr-only">
-                Technical specifications for {product.name}
-              </caption>
-              <tbody>
-                {confirmedSpecs(product).map((spec) => (
-                  <tr
-                    key={spec.label}
-                    className="border-border/50 border-b last:border-b-0"
-                  >
-                    <th
-                      scope="row"
-                      className="text-muted-foreground py-2.5 text-left font-normal"
+          <GlassCard
+            size="lg"
+            edgeLight
+            className="lg:col-span-1 lg:self-start"
+          >
+            <h2 className="text-lg font-extrabold">Specifications</h2>
+            <GlassPlate className="mt-4 p-4">
+              <table className="w-full text-sm">
+                <caption className="sr-only">
+                  Technical specifications for {product.name}
+                </caption>
+                <tbody>
+                  {confirmedSpecs(product).map((spec) => (
+                    <tr
+                      key={spec.label}
+                      className="border-border/50 border-b last:border-b-0"
                     >
-                      {spec.label}
-                    </th>
-                    <td className="py-2.5 text-right font-medium">
-                      {spec.value}
-                    </td>
-                  </tr>
+                      <th
+                        scope="row"
+                        className="text-muted-foreground py-2.5 text-left font-normal"
+                      >
+                        {spec.label}
+                      </th>
+                      <td className="py-2.5 text-right font-medium">
+                        {spec.value}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </GlassPlate>
+
+            <GlassButton
+              asChild
+              variant="solid"
+              size="md"
+              className="mt-5 w-full"
+            >
+              <Link href="/contact">Request a quote</Link>
+            </GlassButton>
+          </GlassCard>
+
+          {/* Applications + features */}
+          <div className="grid gap-6 lg:col-span-2">
+            <GlassCard size="lg">
+              <h2 className="text-lg font-extrabold">Applications</h2>
+              <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
+                {product.applications.map((item) => (
+                  <li
+                    key={item}
+                    className="text-muted-foreground flex gap-2.5 text-sm"
+                  >
+                    <span aria-hidden className="text-brand-lit mt-0.5">
+                      ▸
+                    </span>
+                    {item}
+                  </li>
                 ))}
-              </tbody>
-            </table>
-          </GlassPlate>
-
-          <GlassButton asChild variant="solid" size="md" className="mt-5 w-full">
-            <Link href="/contact">Request a quote</Link>
-          </GlassButton>
-        </GlassCard>
-
-        {/* Applications + features */}
-        <div className="grid gap-6 lg:col-span-2">
-          <GlassCard size="lg">
-            <h2 className="text-lg font-extrabold">Applications</h2>
-            <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
-              {product.applications.map((item) => (
-                <li key={item} className="text-muted-foreground flex gap-2.5 text-sm">
-                  <span aria-hidden className="text-brand-lit mt-0.5">
-                    ▸
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </GlassCard>
-
-          <GlassCard size="lg">
-            <h2 className="text-lg font-extrabold">Why this film</h2>
-            <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
-              {product.features.map((item) => (
-                <li key={item} className="text-muted-foreground flex gap-2.5 text-sm">
-                  <span aria-hidden className="text-brand-amber mt-0.5">
-                    ✓
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </GlassCard>
-        </div>
-      </div>
-
-      {/* Related */}
-      <section className="mt-16">
-        <h2 className="text-sm font-semibold tracking-widest uppercase">
-          Other grades
-        </h2>
-        <div className="mt-5 grid gap-4 sm:grid-cols-3">
-          {others.map((other) => (
-            <GlassCard key={other.slug} size="md" interactive>
-              <h3 className="font-medium">
-                <Link
-                  href={`/products/${other.slug}`}
-                  className="focus-visible:ring-ring/60 rounded outline-none after:absolute after:inset-0 after:content-[''] focus-visible:ring-2"
-                >
-                  {other.name}
-                </Link>
-              </h3>
-              <p className="text-muted-foreground mt-1.5 text-sm">
-                {other.tagline}
-              </p>
+              </ul>
             </GlassCard>
-          ))}
+
+            <GlassCard size="lg">
+              <h2 className="text-lg font-extrabold">Why this film</h2>
+              <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
+                {product.features.map((item) => (
+                  <li
+                    key={item}
+                    className="text-muted-foreground flex gap-2.5 text-sm"
+                  >
+                    <span aria-hidden className="text-brand-amber mt-0.5">
+                      ✓
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </GlassCard>
+          </div>
         </div>
-      </section>
-    </Container>
+
+        {/* Related */}
+        <section className="mt-16">
+          <h2 className="text-sm font-semibold tracking-widest uppercase">
+            Other grades
+          </h2>
+          <div className="mt-5 grid gap-4 sm:grid-cols-3">
+            {others.map((other) => (
+              <GlassCard key={other.slug} size="md" interactive>
+                <h3 className="font-medium">
+                  <Link
+                    href={`/products/${other.slug}`}
+                    className="focus-visible:ring-ring/60 rounded outline-none after:absolute after:inset-0 after:content-[''] focus-visible:ring-2"
+                  >
+                    {other.name}
+                  </Link>
+                </h3>
+                <p className="text-muted-foreground mt-1.5 text-sm">
+                  {other.tagline}
+                </p>
+              </GlassCard>
+            ))}
+          </div>
+        </section>
+      </Container>
+
+      <CtaBand />
+    </>
   );
 }
