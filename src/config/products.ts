@@ -189,6 +189,23 @@ export const products = [
   },
 ] as const satisfies readonly Product[];
 
+/**
+ * Aggregate capability across the whole catalogue, for the home page.
+ *
+ * These are the outer bounds of the per-product specs above — widths span
+ * 50 mm (manual grade) to 1000 mm, thickness 12 to 80 micron, and the highest
+ * stretch figure is 350%+. Kept as strings rather than derived by parsing the
+ * spec values, because parsing "250 mm – 1000 mm" back into numbers would be
+ * fragile and would silently produce a wrong headline figure if a format
+ * changed. If a product's range changes, update this by hand.
+ */
+export const capabilities = {
+  widthRange: "50 – 1000 mm",
+  thicknessRange: "12 – 80 micron",
+  maxStretch: "350%+",
+  polymer: "100% virgin LLDPE",
+} as const;
+
 /** Union of every valid product slug — `"machine-grade-stretch-film" | …` */
 export type ProductSlug = (typeof products)[number]["slug"];
 

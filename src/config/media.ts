@@ -171,3 +171,23 @@ export const facility = {
 export function hasMedia(asset: { src: string }): boolean {
   return asset.src.trim().length > 0;
 }
+
+/**
+ * Media for a product, by slug.
+ *
+ * Returns an empty-but-valid asset rather than throwing when a slug has no
+ * entry yet. Adding a product to config/products.ts should never be able to
+ * crash a page just because its photo hasn't been uploaded — MediaFrame renders
+ * a designed placeholder for an empty `src`.
+ */
+export function getProductMedia(slug: string): MediaAsset {
+  const known: Record<string, MediaAsset> = products;
+  return (
+    known[slug] ?? {
+      src: "",
+      alt: "",
+      width: 1600,
+      height: 900,
+    }
+  );
+}
