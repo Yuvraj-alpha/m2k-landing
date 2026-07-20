@@ -1,8 +1,19 @@
-import type { ProductSlug } from "@/config/products";
-
-/** A product added to the request-for-quote list. */
+/**
+ * A product added to the request-for-quote list.
+ *
+ * `slug` is a plain string rather than the `ProductSlug` union on purpose. The
+ * union only survives on the `products` const array — reading through the
+ * `Product` interface (as every list rendering does) widens it back to string,
+ * so threading the union through here would mean casts at every call site for
+ * safety that isn't real.
+ *
+ * The genuine boundary is the server: `enquiryFormSchema` validates submitted
+ * slugs against the actual catalogue with a Zod enum, and the action drops
+ * anything that doesn't resolve. Persisted client state is untrusted input
+ * regardless of how it is typed — a user can edit localStorage.
+ */
 export interface RfqItem {
-  slug: ProductSlug;
+  slug: string;
   name: string;
   /** Optional buyer notes — required micron, width, monthly volume. */
   note?: string;

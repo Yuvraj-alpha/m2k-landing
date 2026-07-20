@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { CtaBand } from "@/app/components/cta-band";
+import { AddToEnquiry } from "@/components/common/add-to-enquiry";
 import { Container } from "@/components/common/container";
 import { MediaFrame } from "@/components/common/media-frame";
 import { SectionHeading } from "@/components/common/section-heading";
@@ -74,6 +75,12 @@ export default function ProductsPage() {
                       </div>
                     ))}
                   </dl>
+
+                  {/* mt-auto pins this to the bottom so the buttons line up
+                      across cards of differing spec-table heights. */}
+                  <div className="mt-auto pt-5">
+                    <AddToEnquiry slug={product.slug} name={product.name} />
+                  </div>
                 </div>
               </GlassCard>
             ))}

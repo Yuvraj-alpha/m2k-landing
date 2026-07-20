@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { CtaBand } from "@/app/components/cta-band";
+import { AddToEnquiry } from "@/components/common/add-to-enquiry";
 import { Container } from "@/components/common/container";
 import { MediaFrame } from "@/components/common/media-frame";
 import { GlassButton } from "@/components/glass/glass-button";
@@ -128,14 +129,17 @@ export default async function ProductPage({ params }: Props) {
               </table>
             </GlassPlate>
 
-            <GlassButton
-              asChild
-              variant="solid"
-              size="md"
-              className="mt-5 w-full"
-            >
-              <Link href="/contact">Request a quote</Link>
-            </GlassButton>
+            <div className="mt-5 space-y-3">
+              <AddToEnquiry
+                slug={product.slug}
+                name={product.name}
+                size="md"
+                className="w-full"
+              />
+              <GlassButton asChild variant="solid" size="md" className="w-full">
+                <Link href="/contact">Request a quote</Link>
+              </GlassButton>
+            </div>
           </GlassCard>
 
           {/* Applications + features */}

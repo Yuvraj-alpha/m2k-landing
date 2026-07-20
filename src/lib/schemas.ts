@@ -68,4 +68,12 @@ export const enquiryFormSchema = z.object({
   website: z.string().max(0, "Rejected.").optional(),
 });
 
-export type EnquiryFormValues = z.infer<typeof enquiryFormSchema>;
+/**
+ * Two types, because `.default()` makes input and output differ: `company` and
+ * `products` are optional going in and guaranteed coming out.
+ *
+ * react-hook-form must be parameterised with both — `useForm<Input, ctx,
+ * Output>` — or the resolver won't typecheck against the field values.
+ */
+export type EnquiryFormInput = z.input<typeof enquiryFormSchema>;
+export type EnquiryFormValues = z.output<typeof enquiryFormSchema>;

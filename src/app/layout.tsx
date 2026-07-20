@@ -3,6 +3,8 @@ import { Archivo, Inter } from "next/font/google";
 
 import { WhatsAppFab } from "@/components/common/whatsapp-fab";
 import { LiquidBackdrop } from "@/components/glass/liquid-backdrop";
+import { RfqDrawer } from "@/components/layout/rfq-drawer";
+import { RfqHydration } from "@/components/layout/rfq-hydration";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { siteConfig } from "@/config/site";
@@ -79,6 +81,12 @@ export default function RootLayout({
         </main>
 
         <SiteFooter />
+
+        {/* RfqHydration restores the persisted enquiry list after mount; the
+            store deliberately starts empty so SSR and first client render
+            agree. RfqDrawer renders nothing until something is selected. */}
+        <RfqHydration />
+        <RfqDrawer />
         <WhatsAppFab />
       </body>
     </html>
