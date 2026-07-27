@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# M2K Packpro Industries — website
 
-## Getting Started
+Marketing site for a stretch-film manufacturer in Ludhiana, Punjab. Next.js 16
+(App Router), React 19, Tailwind v4, TypeScript.
 
-First, run the development server:
+**Not yet launched.** See [docs/PRE-LAUNCH.md](./docs/PRE-LAUNCH.md) for what
+is outstanding.
+
+## Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local     # optional — the site runs without it
+npm run dev                    # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The enquiry form needs `RESEND_API_KEY` to actually deliver mail. Without it
+the site still builds and runs; submissions log to the console and the user is
+shown the phone number instead.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run dev      # dev server
+npm run build    # production build — does NOT run eslint
+npm run start    # serve the production build
+npm run lint     # eslint (Next 16 removed `next lint`; run this yourself)
+```
 
-## Learn More
+## Routes
 
-To learn more about Next.js, take a look at the following resources:
+`/` · `/about` · `/products` · `/products/[slug]` (4) · `/quality` · `/contact`
+plus `/robots.txt`, `/sitemap.xml`, generated OG images, and `/kitchen-sink`
+(the glass design-system reference — noindex, not linked from anywhere).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Where the content lives
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+There is no CMS. Three typed config files drive the site:
 
-## Deploy on Vercel
+- [src/config/site.ts](src/config/site.ts) — company facts, address, phones, nav
+- [src/config/products.ts](src/config/products.ts) — the catalogue; adding an
+  entry creates its route, sitemap entry, OG image and structured data
+- [src/config/media.ts](src/config/media.ts) — every image and video URL
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Documentation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Doc | For |
+|---|---|
+| [PRE-LAUNCH.md](./docs/PRE-LAUNCH.md) | What is left before deployment |
+| [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | How the codebase is organised |
+| [DEPLOYMENT.md](./docs/DEPLOYMENT.md) | Hosting, env vars, DNS, rollback |
+| [MEDIA.md](./docs/MEDIA.md) | Preparing and wiring up images and video |
+| [CONTENT.md](./docs/CONTENT.md) | Editing copy, specs and contact details |
+| [SEO.md](./docs/SEO.md) | Structured data, OG cards, post-launch checks |
+| [RUNBOOK.md](./docs/RUNBOOK.md) | Symptom → cause → fix for the live site |
+
+Contributing conventions are in [AGENTS.md](./AGENTS.md).
+
+## Two things to know before changing anything
+
+1. **The provenance rule** — nothing goes on this site that M2K has not
+   actually claimed. Several omissions in the copy are deliberate and
+   commented. Details in
+   [ARCHITECTURE.md](./docs/ARCHITECTURE.md#the-provenance-rule).
+2. **This is Next 16**, and it differs from older versions in ways that will
+   catch you out. Read `node_modules/next/dist/docs/` first; the common traps
+   are tabulated in
+   [ARCHITECTURE.md](./docs/ARCHITECTURE.md#next-16-specifics-that-bite).
