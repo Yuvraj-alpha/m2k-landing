@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Inter } from "next/font/google";
 
+import { JsonLd } from "@/components/common/json-ld";
 import { WhatsAppFab } from "@/components/common/whatsapp-fab";
 import { LiquidBackdrop } from "@/components/glass/liquid-backdrop";
+import { organizationJsonLd } from "@/lib/seo";
 import { RfqDrawer } from "@/components/layout/rfq-drawer";
 import { RfqHydration } from "@/components/layout/rfq-hydration";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -32,6 +34,21 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  // openGraph.images / twitter.images are filled automatically from the
+  // opengraph-image.tsx file conventions — no need to list them here.
+  openGraph: {
+    type: "website",
+    siteName: siteConfig.name,
+    locale: "en_IN",
+    url: siteConfig.url,
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export const viewport: Viewport = {
@@ -56,6 +73,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
+        {/* Organisation + LocalBusiness data, sitewide. Per-page Product and
+            BreadcrumbList JSON-LD is emitted by the individual routes. */}
+        <JsonLd data={organizationJsonLd()} />
+
         {/* Decorative, rendered once for the whole document: this is the light
             source every glass surface refracts. Fixed to the viewport, so it
             lights content continuously as the page scrolls. */}

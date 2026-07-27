@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { CtaBand } from "@/app/components/cta-band";
 import { AddToEnquiry } from "@/components/common/add-to-enquiry";
 import { Container } from "@/components/common/container";
+import { JsonLd } from "@/components/common/json-ld";
 import { MediaFrame } from "@/components/common/media-frame";
 import { GlassButton } from "@/components/glass/glass-button";
 import { GlassCard } from "@/components/glass/glass-card";
@@ -16,6 +17,7 @@ import {
   productSlugs,
   productsInOrder,
 } from "@/config/products";
+import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo";
 
 /**
  * PHASE 4 — proves the catalogue drives static generation and per-page
@@ -61,6 +63,14 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <>
+      <JsonLd data={productJsonLd(product)} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          ["Products", "/products"],
+          [product.shortName, `/products/${product.slug}`],
+        ])}
+      />
+
       <Container className="py-16 sm:py-24">
         <nav aria-label="Breadcrumb" className="text-muted-foreground text-sm">
           <ol className="flex items-center gap-2">
