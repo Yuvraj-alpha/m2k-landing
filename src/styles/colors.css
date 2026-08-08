@@ -114,7 +114,7 @@
  * Near-black with a faint cool cast, so the warm brand light bleeding through
  * the backdrop blobs reads as *light* rather than as a colour tint.         */
 .dark {
-  --background: oklch(0.09 0.004 265);
+  --background: oklch(0.205 0.04 21);
   --foreground: oklch(0.97 0.002 265);
   --card: oklch(0.16 0.005 265);
   --card-foreground: oklch(0.97 0.002 265);
