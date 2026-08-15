@@ -13,11 +13,11 @@ const nextConfig: NextConfig = {
     // re-validating these patterns, so keep `pathname` tight if the storage
     // account is shared.
     remotePatterns: [
-      // {
-      //   protocol: "https",
-      //   hostname: "<account>.public.blob.vercel-storage.com",
-      //   pathname: "/**",
-      // },
+      {
+        protocol: "https",
+        hostname: "qmsqiabk0m5xt15h.public.blob.vercel-storage.com",
+        pathname: "/**",
+      },
     ],
 
     // Next 16 requires qualities to be declared explicitly; anything not

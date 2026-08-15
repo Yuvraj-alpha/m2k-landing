@@ -110,14 +110,14 @@ export const products = {
    * should carry the silage product page.
    */
   "silage-film": {
-    src: "",
+    src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/silage-film.webp",
     alt: "Bale wrapper applying M2K silage film to a fodder bale in the field",
     width: 2000,
     height: 900,
   },
   /** SOURCE: ../kamm di photos/MANUAL GRADE.jpg */
   "manual-grade-stretch-film": {
-    src: "",
+    src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/manual-grade.webp",
     alt: "Hand-grade stretch film roll being applied to a palletised load",
     width: 1600,
     height: 1200,
@@ -136,7 +136,7 @@ export const products = {
 export const facility = {
   /** SOURCE: ../kamm di photos/IMG20260711181901.jpg */
   plantWide: {
-    src: "",
+    src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/home/built-in-ldh.webp",
     alt: "M2K Packpro production floor in Ludhiana, Punjab",
     width: 2400,
     height: 1800,

@@ -80,7 +80,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <GlassButton asChild variant="solid" size="sm" className="max-sm:hidden">
+          <GlassButton
+            asChild
+            variant="solid"
+            size="sm"
+            className="max-sm:hidden"
+          >
             <Link href="/contact">Request a quote</Link>
           </GlassButton>
           <MobileNav />
