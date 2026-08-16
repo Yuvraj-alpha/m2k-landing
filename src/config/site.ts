@@ -33,7 +33,7 @@ export const siteConfig = {
     countryCode: "IN",
   },
 
-  phones: ["+919878730079", "+919878177717"],
+  phones: ["+919878730079"],
   email: "admin@m2kpackpro.in",
   whatsapp: "919878730079",
 

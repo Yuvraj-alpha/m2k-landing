@@ -66,17 +66,6 @@ export const products = {
     },
   },
 
-  "silage-film": {
-    card: {
-      src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/silage-film.webp",
-      alt: "Silage stretch film",
-    },
-    page: {
-      src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/silage-farm.webp",
-      alt: "Bale wrapper applying M2K silage film to a fodder bale in the field",
-    },
-  },
-
   "manual-grade-stretch-film": {
     card: {
       src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/manual-grade.webp",
@@ -85,6 +74,17 @@ export const products = {
     page: {
       src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/manual-grade.webp",
       alt: "Hand-grade stretch film roll being applied to a palletised load",
+    },
+  },
+
+  "silage-film": {
+    card: {
+      src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/silage-film.webp",
+      alt: "Silage stretch film",
+    },
+    page: {
+      src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/silage-farm.webp",
+      alt: "Bale wrapper applying M2K silage film to a fodder bale in the field",
     },
   },
 

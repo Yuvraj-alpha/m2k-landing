@@ -23,8 +23,7 @@ export function HeroSection() {
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
           <div>
             <p className="text-brand-amber font-mono text-xs tracking-[0.2em] uppercase">
-              {siteConfig.address.locality}, {siteConfig.address.region} ·{" "}
-              {siteConfig.experienceYears} years in packaging
+              {siteConfig.address.locality}, {siteConfig.address.region}
             </p>
 
             <h1 className="mt-5 text-5xl font-extrabold text-balance sm:text-6xl lg:text-7xl">
@@ -60,7 +59,11 @@ export function HeroSection() {
             {/* Capability figures, laid over the image. These are the numbers a
                 buyer is actually scanning for. */}
             <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-              <GlassCard variant="raised" size="sm" className="backdrop-blur-xl">
+              <GlassCard
+                variant="raised"
+                size="sm"
+                className="backdrop-blur-xl"
+              >
                 <dl className="grid grid-cols-3 gap-3 text-center">
                   {[
                     { label: "Widths", value: capabilities.widthRange },

@@ -4,7 +4,6 @@ import { AboutTeaser } from "@/app/components/about-teaser";
 import { CtaBand } from "@/app/components/cta-band";
 import { HeroSection } from "@/app/components/hero-section";
 import { ProductShowcase } from "@/app/components/product-showcase";
-import { TrustBar } from "@/app/components/trust-bar";
 import { WhyUsGrid } from "@/app/components/why-us-grid";
 import { siteConfig } from "@/config/site";
 
@@ -20,7 +19,6 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <TrustBar />
       <ProductShowcase />
       <WhyUsGrid />
       <AboutTeaser />
