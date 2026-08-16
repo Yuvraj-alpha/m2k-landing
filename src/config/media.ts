@@ -15,18 +15,27 @@ export interface VideoAsset {
   alt: string;
 }
 
+export interface SizedMediaAsset extends MediaAsset {
+  width: number;
+  height: number;
+}
+
 // --- Brand ------------------------------------------------------------------
 
 export const brand = {
   logoFull: {
     src: "",
     alt: "M2K Packpro Industries — Experts in Special Film Manufacturing",
+    width: 970,
+    height: 260,
   },
   logoMark: {
     src: "",
     alt: "M2K Packpro Industries",
+    width: 256,
+    height: 256,
   },
-} satisfies Record<string, MediaAsset>;
+} satisfies Record<string, SizedMediaAsset>;
 
 // --- Hero -------------------------------------------------------------------
 
