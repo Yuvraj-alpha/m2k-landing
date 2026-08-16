@@ -37,7 +37,7 @@ export function SiteHeader() {
           : "border-b border-transparent bg-transparent",
       )}
     >
-      <Container className="flex h-16 items-center justify-between gap-4 sm:h-18">
+      <Container className="flex h-16 sm:h-20 items-center justify-between gap-4">
         <Link
           href="/"
           className="focus-visible:ring-ring/60 rounded-lg outline-none focus-visible:ring-2"

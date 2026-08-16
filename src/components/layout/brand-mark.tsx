@@ -27,7 +27,7 @@ export function BrandMark({ className }: { className?: string }) {
         // `priority` in favour of these explicit hints.)
         loading="eager"
         fetchPriority="high"
-        className={cn("h-9 w-auto sm:h-10", className)}
+        className={cn("h-9 w-auto sm:h-24", className)}
       />
     );
   }

@@ -24,7 +24,7 @@ export interface SizedMediaAsset extends MediaAsset {
 
 export const brand = {
   logoFull: {
-    src: "",
+    src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/logo-inverted.png",
     alt: "M2K Packpro Industries — Experts in Special Film Manufacturing",
     width: 970,
     height: 260,
