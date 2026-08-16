@@ -57,11 +57,11 @@ export const hero = {
 export const products = {
   "machine-grade-stretch-film": {
     card: {
-      src: "",
+      src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/machine-grade.webp",
       alt: "Machine grade stretch film roll",
     },
     page: {
-      src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/silage-film.webp",
+      src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/machine-grade.webp",
       alt: "Close-up of a machine grade stretch film roll on the winder",
     },
   },
@@ -90,11 +90,11 @@ export const products = {
 
   "coloured-stretch-film": {
     card: {
-      src: "",
+      src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/colored-rolls.webp",
       alt: "Coloured stretch film rolls",
     },
     page: {
-      src: "",
+      src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/products/color-coded.webp",
       alt: "Coloured stretch film rolls in several tints",
     },
   },
