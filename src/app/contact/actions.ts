@@ -12,22 +12,16 @@ import type { EnquiryResult } from "@/types/enquiry";
 /**
  * Handles an enquiry submission.
  *
- * SECURITY NOTE: a Next.js server function is reachable by direct POST — the
- * form UI is not a boundary. Everything below therefore re-validates on the
- * server regardless of what the client already checked:
- *   • the payload is re-parsed with the same Zod schema
- *   • product slugs are re-checked against the real catalogue
- *   • the honeypot is enforced here, not just hidden with CSS
- *   • the request is rate-limited by IP
+ * SECURITY NOTE: a Next.js Server Action can be called directly, so all
+ * validation and anti-abuse checks are performed again on the server.
  */
-export async function submitEnquiry(
-  raw: unknown,
-): Promise<EnquiryResult> {
-  // 1. Validate. Never trust the client's copy of the schema.
+export async function submitEnquiry(raw: unknown): Promise<EnquiryResult> {
+  // 1. Validate the incoming payload.
   const parsed = enquiryFormSchema.safeParse(raw);
 
   if (!parsed.success) {
     const { fieldErrors } = parsed.error.flatten();
+
     return {
       ok: false,
       message: "Please check the highlighted fields and try again.",
@@ -37,98 +31,173 @@ export async function submitEnquiry(
 
   const data = parsed.data;
 
-  // 2. Honeypot. A bot that fills every field it finds trips this. Answer as
-  // though it succeeded — telling a bot why it failed only helps it adapt.
+  // 2. Honeypot.
+  // Bots commonly fill every input they encounter. Return a fake success so
+  // they aren't told that the honeypot detected them.
   if (data.website) {
+    console.warn("[enquiry] Honeypot triggered", {
+      website: data.website,
+    });
+
     return { ok: true };
   }
 
-  // 3. Rate limit by client IP. `x-forwarded-for` is set by the platform proxy;
-  // its first entry is the client. Falls back to a shared bucket when absent,
-  // which is strict rather than permissive.
+  // 3. Rate-limit by client IP.
   const headerList = await headers();
-  const forwarded = headerList.get("x-forwarded-for");
-  const ip = forwarded?.split(",")[0]?.trim() || "unknown";
+
+  const forwardedFor = headerList.get("x-forwarded-for");
+  const realIp = headerList.get("x-real-ip");
+
+  const ip = forwardedFor?.split(",")[0]?.trim() || realIp?.trim() || "unknown";
 
   const { allowed, retryAfterMs } = checkRateLimit(ip);
+
   if (!allowed) {
     const minutes = Math.max(1, Math.ceil(retryAfterMs / 60_000));
+
     return {
       ok: false,
-      message: `You've sent several enquiries already. Please try again in about ${minutes} minute${minutes === 1 ? "" : "s"}, or call us on ${formatPhone(siteConfig.phones[0]!)}.`,
+      message: `You've sent several enquiries already. Please try again in about ${minutes} minute${
+        minutes === 1 ? "" : "s"
+      }, or call us on ${formatPhone(siteConfig.phones[0]!)}.`,
     };
   }
 
-  // 4. Resolve slugs to real product names for the email body. Anything not in
-  // the catalogue is dropped rather than echoed into the message.
+  // 4. Resolve product slugs against the real catalogue.
+  // Never echo arbitrary product values supplied by the client.
   const selected = data.products
     .map((slug) => getProduct(slug)?.name)
     .filter((name): name is string => Boolean(name));
 
-  // 5. Send.
+  // 5. Initialise Resend.
   const resend = getResend();
 
   if (!resend) {
-    // Unconfigured rather than broken. Log for the operator and give the user
-    // a route that actually works instead of a dead end.
     console.error(
-      "[enquiry] RESEND_API_KEY is not set — enquiry was not delivered.",
-      { name: data.name, email: data.email, products: selected },
+      "[enquiry] RESEND_API_KEY is not configured — enquiry was not delivered.",
+      {
+        name: data.name,
+        email: data.email,
+        products: selected,
+      },
     );
+
     return {
       ok: false,
-      message: `We couldn't send that just now. Please email ${siteConfig.email} or call ${formatPhone(siteConfig.phones[0]!)} and we'll pick it up straight away.`,
+      message: `We couldn't send that just now. Please email ${
+        siteConfig.email
+      } or call ${formatPhone(
+        siteConfig.phones[0]!,
+      )} and we'll pick it up straight away.`,
     };
   }
 
+  // 6. Send enquiry.
   try {
-    const { error } = await resend.emails.send({
+    console.info("[enquiry] Sending enquiry via Resend", {
       from: MAIL_FROM,
       to: MAIL_TO,
-      // So a reply in the inbox goes to the buyer, not to the site.
       replyTo: data.email,
-      subject: `Enquiry from ${data.name}${data.company ? ` (${data.company})` : ""}`,
+    });
+
+    const result = await resend.emails.send({
+      from: MAIL_FROM,
+      to: MAIL_TO,
+
+      // Replying to the received email will reply directly to the customer.
+      replyTo: data.email,
+
+      subject: `Enquiry from ${data.name}${
+        data.company ? ` (${data.company})` : ""
+      }`,
+
       text: buildEmailBody(data, selected),
     });
 
-    if (error) {
-      console.error("[enquiry] Resend rejected the message", error);
+    console.info("[enquiry] Resend response", {
+      emailId: result.data?.id ?? null,
+      error: result.error ?? null,
+    });
+
+    if (result.error) {
+      console.error("[enquiry] Resend rejected the message", result.error);
+
       return {
         ok: false,
         message: `We couldn't send that just now. Please email ${siteConfig.email} and we'll pick it up straight away.`,
       };
     }
 
+    if (!result.data?.id) {
+      console.error(
+        "[enquiry] Resend returned neither an error nor an email ID.",
+      );
+
+      return {
+        ok: false,
+        message: `We couldn't send that just now. Please email ${siteConfig.email} and we'll pick it up straight away.`,
+      };
+    }
+
+    console.info("[enquiry] Enquiry accepted by Resend", {
+      emailId: result.data.id,
+    });
+
     return { ok: true };
   } catch (cause) {
     console.error("[enquiry] Unexpected failure sending enquiry", cause);
+
     return {
       ok: false,
-      message: `Something went wrong at our end. Please email ${siteConfig.email} or call ${formatPhone(siteConfig.phones[0]!)}.`,
+      message: `Something went wrong at our end. Please email ${
+        siteConfig.email
+      } or call ${formatPhone(siteConfig.phones[0]!)}.`,
     };
   }
 }
 
-/** Plain text, so the enquiry is readable in any mail client. */
+/**
+ * Plain-text email body so the enquiry works reliably across mail clients.
+ */
 function buildEmailBody(
-  data: { name: string; company: string; email: string; phone: string; message: string },
+  data: {
+    name: string;
+    company: string;
+    email: string;
+    phone: string;
+    message: string;
+  },
   products: string[],
 ): string {
   return [
     `Name:     ${data.name}`,
+
     data.company ? `Company:  ${data.company}` : null,
+
     `Email:    ${data.email}`,
     `Phone:    ${data.phone}`,
-    products.length ? `\nProducts of interest:\n${products.map((p) => `  - ${p}`).join("\n")}` : null,
-    `\nMessage:\n${data.message}`,
-    `\n—\nSent from the enquiry form at ${siteConfig.url}`,
+
+    products.length
+      ? [
+          "",
+          "Products of interest:",
+          ...products.map((product) => `  - ${product}`),
+        ].join("\n")
+      : null,
+
+    ["", "Message:", data.message].join("\n"),
+
+    ["", "—", `Sent from the enquiry form at ${siteConfig.url}`].join("\n"),
   ]
-    .filter(Boolean)
+    .filter((line): line is string => Boolean(line))
     .join("\n");
 }
 
-/** +919878730079 → +91 98787 30079 */
+/**
+ * +919878730079 → +91 98787 30079
+ */
 function formatPhone(e164: string): string {
   const match = /^\+91(\d{5})(\d{5})$/.exec(e164);
+
   return match ? `+91 ${match[1]} ${match[2]}` : e164;
 }

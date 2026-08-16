@@ -8,7 +8,11 @@ import { MediaFrame } from "@/components/common/media-frame";
 import { SectionHeading } from "@/components/common/section-heading";
 import { GlassCard } from "@/components/glass/glass-card";
 import { getProductMedia } from "@/config/media";
-import { capabilities, confirmedSpecs, productsInOrder } from "@/config/products";
+import {
+  capabilities,
+  confirmedSpecs,
+  productsInOrder,
+} from "@/config/products";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -42,7 +46,7 @@ export default function ProductsPage() {
                 className="flex flex-col overflow-hidden"
               >
                 <MediaFrame
-                  asset={getProductMedia(product.slug)}
+                  asset={getProductMedia(product.slug, "card")}
                   sizes="(min-width: 640px) 45vw, 100vw"
                   className="aspect-video rounded-none border-0 shadow-none"
                 />

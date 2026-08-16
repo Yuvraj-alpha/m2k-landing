@@ -96,7 +96,7 @@ export default async function ProductPage({ params }: Props) {
           </header>
 
           <MediaFrame
-            asset={getProductMedia(product.slug)}
+            asset={getProductMedia(product.slug, "page")}
             eager
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="aspect-video w-full"

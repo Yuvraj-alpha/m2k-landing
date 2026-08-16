@@ -39,7 +39,7 @@ export function ProductShowcase() {
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2">
           {productsInOrder.map((product) => {
-            const media = getProductMedia(product.slug);
+            const media = getProductMedia(product.slug, "card");
             // Lead with the two specs buyers compare across grades.
             const headline = confirmedSpecs(product).filter((spec) =>
               ["Thickness", "Stretchability"].includes(spec.label),
