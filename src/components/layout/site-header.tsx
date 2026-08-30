@@ -86,7 +86,7 @@ export function SiteHeader() {
             size="sm"
             className="max-sm:hidden"
           >
-            <Link href="/contact">Book Demo</Link>
+            <Link href="/contact">Request a Quote</Link>
           </GlassButton>
 
           <MobileNav />

@@ -1,90 +1,142 @@
-import Link from "next/link";
+"use client";
 
-import { Container } from "@/components/common/container";
-import { MediaFrame } from "@/components/common/media-frame";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
 import { GlassButton } from "@/components/glass/glass-button";
-import { GlassCard } from "@/components/glass/glass-card";
-import { hero } from "@/config/media";
-import { capabilities } from "@/config/products";
-import { siteConfig } from "@/config/site";
+import { cn } from "@/lib/utils";
 
 /**
- * Home hero.
+ * Full-screen hero with an auto-rotating background carousel.
  *
- * The headline leads with what M2K *makes* rather than with the company name —
- * a buyer arriving from "stretch film manufacturer Ludhiana" needs to confirm
- * they're in the right place within one line. The company name is in the header,
- * the title tag and the footer; it doesn't need to be the <h1>.
+ * Replace the image paths below with your actual factory / stretch-film
+ * photography.
  */
+const slides = [
+  {
+    src: "/images/hero/hero-1.webp",
+    alt: "M2K Packpro stretch film manufacturing facility",
+  },
+  {
+    src: "/images/hero/hero-2.webp",
+    alt: "Machine grade stretch film rolls",
+  },
+  {
+    src: "/images/hero/hero-3.webp",
+    alt: "Stretch film production at M2K Packpro Industries",
+  },
+];
+
 export function HeroSection() {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % slides.length);
+    }, 5500);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
   return (
-    <section className="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-28">
-      <Container>
-        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
-          <div>
-            <p className="text-brand-amber font-mono text-xs tracking-[0.2em] uppercase">
-              {siteConfig.address.locality}, {siteConfig.address.region}
+    <section className="relative min-h-[calc(100svh-4rem)] overflow-hidden sm:min-h-[calc(100svh-5rem)]">
+      {/* Background carousel */}
+      <div className="absolute inset-0">
+        {slides.map((slide, index) => (
+          <div
+            key={slide.src}
+            className={cn(
+              "absolute inset-0 transition-opacity duration-1000 ease-in-out",
+              index === activeSlide ? "opacity-100" : "opacity-0",
+            )}
+            aria-hidden={index !== activeSlide}
+          >
+            <Image
+              src={slide.src}
+              alt={slide.alt}
+              fill
+              priority={index === 0}
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Dark cinematic overlay */}
+      <div className="absolute inset-0 bg-black/45" />
+
+      {/* Stronger contrast behind the copy */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/15" />
+
+      {/* Bottom fade into the page */}
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background/80 to-transparent" />
+
+      {/* Subtle brand warmth */}
+      <div
+        aria-hidden
+        className="absolute -left-32 top-1/3 h-96 w-96 rounded-full bg-amber-500/10 blur-3xl"
+      />
+
+      {/* Hero content */}
+      <div className="relative z-10 flex min-h-[calc(100svh-4rem)] items-center sm:min-h-[calc(100svh-5rem)]">
+        <div className="w-full px-5 py-20 sm:px-8 lg:px-12 xl:px-16">
+          <div className="max-w-5xl">
+            {/* Eyebrow */}
+            <p className="text-brand-amber font-mono text-xs font-medium tracking-[0.28em] uppercase sm:text-sm">
+              Manufacturing Excellence
             </p>
 
-            <h1 className="mt-5 text-5xl font-extrabold text-balance sm:text-6xl lg:text-7xl">
-              Stretch film,
+            {/* Brand */}
+            <h1 className="mt-5 max-w-5xl text-4xl sm:text-4xl lg:text-5xl xl:text-6xl leading-[0.98] font-extrabold tracking-[0.04em] text-white ">
+              <span className="text-brand-lit">M2K </span>PACKPRO
               <br />
-              <span className="text-brand-lit">made to hold.</span>
+              INDUSTRIES
             </h1>
 
-            <p className="text-muted-foreground mt-6 max-w-xl text-lg leading-relaxed">
-              Machine grade, manual grade, silage and coloured stretch films —
-              extruded from {capabilities.polymer} at our{" "}
-              {siteConfig.address.locality} works, and slit to your width.
+            {/* Tagline */}
+            <p className="mt-6 max-w-3xl text-lg sm:text-xl lg:text-2xl leading-relaxed font-mono font-medium text-white/80 ">
+              Stretch films made to hold forever.
             </p>
 
-            <div className="mt-9 flex flex-wrap gap-3">
+            {/* CTAs */}
+            <div className="mt-10 flex flex-wrap items-center gap-3 sm:gap-4">
               <GlassButton asChild variant="solid" size="lg">
-                <Link href="/contact">Request a quote</Link>
+                <Link href="/contact">Request Quote</Link>
               </GlassButton>
-              <GlassButton asChild variant="glass" size="lg">
-                <Link href="/products">See the range</Link>
+
+              <GlassButton
+                asChild
+                variant="glass"
+                size="lg"
+                className="border-white/25 bg-white/5 text-white hover:bg-white/10"
+              >
+                <Link href="/products">Product Range</Link>
               </GlassButton>
             </div>
           </div>
-
-          {/* Visual. Falls back to a designed glass panel until the hero photo
-              is uploaded — see components/common/media-frame.tsx. */}
-          <MediaFrame
-            asset={hero.poster}
-            eager
-            sizes="(min-width: 1024px) 45vw, 100vw"
-            className="aspect-4/3 w-full lg:aspect-square"
-          >
-            {/* Capability figures, laid over the image. These are the numbers a
-                buyer is actually scanning for. */}
-            <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-              <GlassCard
-                variant="raised"
-                size="sm"
-                className="backdrop-blur-xl"
-              >
-                <dl className="grid grid-cols-3 gap-3 text-center">
-                  {[
-                    { label: "Widths", value: capabilities.widthRange },
-                    { label: "Thickness", value: capabilities.thicknessRange },
-                    { label: "Stretch", value: capabilities.maxStretch },
-                  ].map((stat) => (
-                    <div key={stat.label}>
-                      <dt className="text-muted-foreground text-[0.65rem] tracking-wider uppercase">
-                        {stat.label}
-                      </dt>
-                      <dd className="mt-1 text-sm font-semibold">
-                        {stat.value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </GlassCard>
-            </div>
-          </MediaFrame>
         </div>
-      </Container>
+      </div>
+
+      {/* Carousel navigation */}
+      <div className="absolute right-5 bottom-8 z-20 flex items-center gap-2 sm:right-8 lg:right-12">
+        {slides.map((slide, index) => (
+          <button
+            key={slide.src}
+            type="button"
+            onClick={() => setActiveSlide(index)}
+            aria-label={`Show slide ${index + 1}`}
+            aria-current={index === activeSlide}
+            className={cn(
+              "h-1 rounded-full transition-all duration-300",
+              index === activeSlide
+                ? "w-10 bg-white"
+                : "w-5 bg-white/35 hover:bg-white/60",
+            )}
+          />
+        ))}
+      </div>
     </section>
   );
 }
