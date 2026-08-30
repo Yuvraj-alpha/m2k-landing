@@ -4,26 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { GlassButton } from "@/components/glass/glass-button";
-import { Container } from "@/components/common/container";
 import { BrandMark } from "@/components/layout/brand-mark";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { siteConfig } from "@/config/site";
 import { useScrolled } from "@/hooks/use-scroll-progress";
 import { cn } from "@/lib/utils";
 
-/**
- * Sticky site header.
- *
- * Two states. At the top of the page it is fully transparent, so the hero runs
- * edge to edge behind it. Once scrolled it becomes a glass bar, which is both
- * an affordance (the page has moved) and a legibility fix (nav labels would
- * otherwise sit on arbitrary page content).
- *
- * The blur is only applied in the scrolled state — an always-on
- * `backdrop-filter` across a full-width sticky element is one of the most
- * expensive things you can put on a page, and at scroll position 0 it is
- * blurring a backdrop nobody can see.
- */
 export function SiteHeader() {
   const scrolled = useScrolled(12);
   const pathname = usePathname();
@@ -37,15 +23,29 @@ export function SiteHeader() {
           : "border-b border-transparent bg-transparent",
       )}
     >
-      <Container className="flex h-16 sm:h-20 items-center justify-between gap-4">
-        <Link
-          href="/"
-          className="focus-visible:ring-ring/60 rounded-lg outline-none focus-visible:ring-2"
-        >
-          <BrandMark />
-        </Link>
+      <div
+        className="
+          grid h-16 w-full
+          grid-cols-[1fr_auto_1fr]
+          items-center
+          px-4 sm:h-20 sm:px-6 lg:px-8
+        "
+      >
+        {/* Logo — extreme left */}
+        <div className="justify-self-start">
+          <Link
+            href="/"
+            className="focus-visible:ring-ring/60 rounded-lg outline-none focus-visible:ring-2"
+          >
+            <BrandMark />
+          </Link>
+        </div>
 
-        <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
+        {/* Navigation — exact center of viewport */}
+        <nav
+          aria-label="Main"
+          className="hidden items-center justify-center gap-1 md:flex"
+        >
           {siteConfig.nav.map((item) => {
             const active =
               item.href === "/"
@@ -66,8 +66,7 @@ export function SiteHeader() {
                 )}
               >
                 {item.label}
-                {/* Active indicator is a shape, not just a colour change, so
-                    it survives greyscale and colour-blind viewing. */}
+
                 {active && (
                   <span
                     aria-hidden
@@ -79,18 +78,20 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        {/* CTA — extreme right */}
+        <div className="flex items-center gap-2 justify-self-end">
           <GlassButton
             asChild
             variant="solid"
             size="sm"
             className="max-sm:hidden"
           >
-            <Link href="/contact">Request a quote</Link>
+            <Link href="/contact">Book Demo</Link>
           </GlassButton>
+
           <MobileNav />
         </div>
-      </Container>
+      </div>
     </header>
   );
 }
