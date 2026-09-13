@@ -15,16 +15,20 @@ import { cn } from "@/lib/utils";
  */
 const slides = [
   {
-    src: "/images/hero/hero-1.webp",
+    src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/home/hero1.webp",
     alt: "M2K Packpro stretch film manufacturing facility",
   },
   {
-    src: "/images/hero/hero-2.webp",
+    src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/home/hero2.webp",
     alt: "Machine grade stretch film rolls",
   },
   {
-    src: "/images/hero/hero-3.webp",
+    src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/home/hero3.webp",
     alt: "Stretch film production at M2K Packpro Industries",
+  },
+  {
+    src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/home/hero4.webp",
+    alt: "",
   },
 ];
 
