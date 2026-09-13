@@ -19,9 +19,8 @@ export function SiteFooter() {
             </div>
 
             <p className="text-muted-foreground mt-5 max-w-md text-sm leading-6">
-              {siteConfig.tagline}. Manufacturing stretch films from 100% virgin
-              LLDPE in {siteConfig.address.locality},{" "}
-              {siteConfig.address.region}.
+              Manufacturing stretch films from 100% virgin LLDPE in{" "}
+              {siteConfig.address.locality}, {siteConfig.address.region}.
             </p>
           </div>
 

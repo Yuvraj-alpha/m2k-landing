@@ -40,10 +40,7 @@ export function WhyUsGrid() {
           <p className="text-brand-amber font-mono text-xs sm:text-base 2xl:text-lg tracking-[0.2em] uppercase">
             Why M2K
           </p>
-          <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">
-            The roll runs, or it doesn&rsquo;t
-          </h2>
-          <p className="text-muted-foreground mt-4 text-lg">
+          <p className="mt-4 font-bold text-lg italic">
             A film that snaps on a high-speed wrapper costs more in downtime
             than it ever saved on price.
           </p>

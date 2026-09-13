@@ -28,7 +28,10 @@ export function ContactDetails() {
 
         <ul className="mt-5 space-y-4 text-sm">
           <li className="flex gap-3">
-            <Phone className="text-brand-lit mt-0.5 size-4 shrink-0" aria-hidden />
+            <Phone
+              className="text-brand-lit mt-0.5 size-4 shrink-0"
+              aria-hidden
+            />
             <div>
               <p className="text-muted-foreground text-xs">Phone</p>
               {siteConfig.phones.map((phone) => (
@@ -62,7 +65,10 @@ export function ContactDetails() {
           </li>
 
           <li className="flex gap-3">
-            <Mail className="text-brand-lit mt-0.5 size-4 shrink-0" aria-hidden />
+            <Mail
+              className="text-brand-lit mt-0.5 size-4 shrink-0"
+              aria-hidden
+            />
             <div>
               <p className="text-muted-foreground text-xs">Email</p>
               <a
@@ -76,7 +82,7 @@ export function ContactDetails() {
         </ul>
       </GlassCard>
 
-      <GlassCard size="lg">
+      {/* <GlassCard size="lg">
         <h2 className="text-lg font-extrabold">The works</h2>
         <address className="mt-5 space-y-4 text-sm not-italic">
           <div className="flex gap-3">
@@ -96,12 +102,11 @@ export function ContactDetails() {
 
           <div className="text-muted-foreground flex gap-3">
             <Clock className="mt-0.5 size-4 shrink-0" aria-hidden />
-            {/* TODO: confirm actual working hours with M2K before launch.
-                Deliberately vague rather than inventing "Mon–Sat 9–6". */}
+        
             <span>Please call ahead to arrange a visit.</span>
           </div>
         </address>
-      </GlassCard>
+      </GlassCard> */}
     </div>
   );
 }
