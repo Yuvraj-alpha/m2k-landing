@@ -1,16 +1,5 @@
 /* ---------------------------------------------------------------------------
- * glass.css — the "liquid glass" material system.
- *
- * Concept: M2K manufactures transparent stretch film. Every surface on this
- * site is a sheet of that film stretched over a lit substrate, so the user is
- * reading *through the product*.
- *
- * Design rule: this file only ever adds translucency on top of an already
- * legible solid surface. If every declaration here were deleted, the site
- * must still be fully readable. That is what makes the reduced-transparency
- * fallback at the bottom safe rather than an afterthought.
- *
- * Colour never appears here — see colors.css.
+ * glass.css — M2K liquid-glass material system
  * ------------------------------------------------------------------------- */
 
 @theme inline {
@@ -20,25 +9,16 @@
 }
 
 :root {
-  /* Tint strengths, expressed as the amount of white/black mixed into the
-     surface. Tuned per mode: dark glass needs white light on it, light glass
-     needs opacity to hold contrast for text. */
   --glass-tint: 6%;
   --glass-tint-strong: 10%;
   --glass-edge: 12%;
   --glass-top-light: 18%;
   --glass-under-shade: 20%;
   --glass-saturate: 160%;
-
-  /* Nested plate for body copy. Text never sits on bare glass — it sits on
-     this, which is opaque enough to guarantee its own contrast ratio. */
   --glass-plate: 40%;
 }
 
 .dark {
-  /* Raised from 6/11/12 after the first visual pass: against this substrate
-     the panels were too close to the background to read as separate material,
-     and the four variants were indistinguishable from each other. */
   --glass-tint: 9%;
   --glass-tint-strong: 16%;
   --glass-edge: 18%;
@@ -48,31 +28,33 @@
   --glass-plate: 38%;
 }
 
+/* ---------------------------------------------------------------------------
+ * General glass surfaces
+ * ------------------------------------------------------------------------- */
+
 @layer components {
-  /* The base material. Composed of four cues that together read as thick
-     glass rather than as "a translucent box":
-       1. a saturated blur          — the refraction
-       2. a hairline border         — the cut edge
-       3. an inset top highlight    — light catching the top bevel
-       4. an inset bottom shade     — the underside falling into shadow
-       5. a long soft drop shadow   — the sheet lifting off the substrate  */
   .glass-surface {
     background: color-mix(in oklab, white var(--glass-tint), transparent);
+
     backdrop-filter: blur(var(--blur-glass)) saturate(var(--glass-saturate));
     -webkit-backdrop-filter: blur(var(--blur-glass))
       saturate(var(--glass-saturate));
+
     border: 1px solid color-mix(in oklab, white var(--glass-edge), transparent);
+
     box-shadow:
-      inset 0 1px 0 color-mix(in oklab, white var(--glass-top-light), transparent),
-      inset 0 -1px 0 color-mix(in oklab, black var(--glass-under-shade), transparent),
+      inset 0 1px 0
+        color-mix(in oklab, white var(--glass-top-light), transparent),
+      inset 0 -1px 0
+        color-mix(in oklab, black var(--glass-under-shade), transparent),
       0 16px 48px -12px rgb(0 0 0 / 0.55);
   }
 
-  /* Light mode inverts the recipe: the tint becomes white *opacity* rather
-     than white light, and the edge becomes a dark hairline. */
   :root:not(.dark) .glass-surface {
     background: color-mix(in oklab, white 62%, transparent);
+
     border-color: color-mix(in oklab, black 10%, transparent);
+
     box-shadow:
       inset 0 1px 0 color-mix(in oklab, white 70%, transparent),
       inset 0 -1px 0 color-mix(in oklab, black 6%, transparent),
@@ -80,16 +62,17 @@
   }
 
   .glass-surface-strong {
-    background: color-mix(in oklab, white var(--glass-tint-strong), transparent);
+    background: color-mix(
+      in oklab,
+      white var(--glass-tint-strong),
+      transparent
+    );
   }
 
   :root:not(.dark) .glass-surface-strong {
     background: color-mix(in oklab, white 78%, transparent);
   }
 
-  /* The contrast guarantee. Any run of body copy sitting on glass gets this
-     underneath it, so its contrast ratio is a property of the plate and not
-     of whatever imagery happens to be behind the panel. */
   .glass-plate {
     background: color-mix(in oklab, black var(--glass-plate), transparent);
   }
@@ -98,17 +81,17 @@
     background: color-mix(in oklab, white 72%, transparent);
   }
 
-  /* Pointer-tracked specular highlight — light sliding across stretched film.
-     --mx/--my are written by use-pointer-glow as raw percentages. The element
-     using this must be position:relative. */
   .glass-sheen::after {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
     pointer-events: none;
+
     opacity: 0;
+
     transition: opacity 300ms ease;
+
     background: radial-gradient(
       420px circle at var(--mx, 50%) var(--my, 50%),
       color-mix(in oklab, white 14%, transparent),
@@ -121,25 +104,16 @@
     opacity: 1;
   }
 
-  /* Directional edge light — the brightest thing on a glass panel is the edge
-     where light enters the material.
-
-     This replaced an SVG feTurbulence/feDisplacementMap approach. That was the
-     original plan, but it failed in practice: displacing a 1px border either
-     produced high-frequency noise that read as a torn edge, or — once damped
-     enough to avoid that — produced no visible refraction while still throwing
-     stray displaced fragments outside the card bounds. A gradient border is
-     cheaper, artefact-free, and reads more like glass than the filter did.
-
-     The double-mask with `exclude` is the standard gradient-border trick: paint
-     the padding box, then knock out the content box, leaving only the ring. */
   .glass-edge-light::before {
     content: "";
     position: absolute;
     inset: 0;
+
     border-radius: inherit;
     padding: 1px;
+
     pointer-events: none;
+
     background: linear-gradient(
       145deg,
       color-mix(in oklab, white 50%, transparent) 0%,
@@ -147,19 +121,20 @@
       transparent 55%,
       color-mix(in oklab, white 22%, transparent) 100%
     );
+
     mask:
       linear-gradient(#000 0 0) content-box,
       linear-gradient(#000 0 0);
+
     mask-composite: exclude;
+
     -webkit-mask:
       linear-gradient(#000 0 0) content-box,
       linear-gradient(#000 0 0);
+
     -webkit-mask-composite: xor;
   }
 
-  /* "Stretch" hover — the film elongating under tension. Deliberately
-     non-uniform and tiny; it should register as material behaviour, not as a
-     bounce effect. */
   .glass-stretch {
     transition:
       transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -171,21 +146,154 @@
   }
 }
 
-/* --- Backdrop -------------------------------------------------------------
- * The lit substrate the glass refracts. Three slow-drifting blobs.
+/* ---------------------------------------------------------------------------
+ * Site header
  *
- * These are CSS animations rather than JS so the whole backdrop can render as
- * a server component with no hydration cost, and so the drift runs on the
- * compositor. Only `transform` is animated — never `filter`, whose blur radius
- * would force a full re-rasterisation every frame. */
+ * Intentionally OUTSIDE @layer.
+ *
+ * These critical compositor styles therefore cannot accidentally lose to
+ * Tailwind's utilities layer.
+ * ------------------------------------------------------------------------- */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+
+  z-index: 1000;
+
+  width: 100%;
+
+  background: transparent;
+  border-bottom: 1px solid transparent;
+
+  box-shadow: none;
+
+  /*
+   * Do not add isolation, transform, filter, contain:paint or
+   * will-change:transform here.
+   */
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    box-shadow 260ms ease;
+}
+
+/*
+ * The content forms the foreground plane of the glass.
+ */
+.site-header__content {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------------------------------------------------------------------------
+ * Scrolled header
+ *
+ * IMPORTANT:
+ *
+ * The backdrop-filter is applied directly to the fixed header itself.
+ * It is not placed on a pseudo-element, nested surface or negative-z layer.
+ * ------------------------------------------------------------------------- */
+
+.site-header.glass-header {
+  background-color: rgb(7 8 11 / 0.44);
+  -webkit-backdrop-filter: blur(1px) saturate(125%) contrast(72%)
+    brightness(68%);
+
+  backdrop-filter: blur(1px) saturate(125%) contrast(72%) brightness(68%);
+
+  border-bottom-color: rgb(255 255 255 / 0.105);
+
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.095),
+    inset 0 2px 18px rgb(255 255 255 / 0.018),
+    inset 0 -1px 0 rgb(0 0 0 / 0.7),
+    0 5px 16px rgb(0 0 0 / 0.22),
+    0 22px 50px -22px rgb(0 0 0 / 0.78);
+}
+
+/* ---------------------------------------------------------------------------
+ * Glass reflections
+ *
+ * These pseudo-elements are decorative only.
+ * They DO NOT own the backdrop-filter.
+ * ------------------------------------------------------------------------- */
+
+.site-header.glass-header::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      62% 190% at 18% -115%,
+      rgb(255 255 255 / 0.105) 0%,
+      rgb(255 255 255 / 0.04) 30%,
+      transparent 68%
+    ),
+    radial-gradient(
+      48% 180% at 84% -120%,
+      rgb(255 255 255 / 0.065) 0%,
+      transparent 66%
+    ),
+    linear-gradient(
+      to bottom,
+      rgb(255 255 255 / 0.047) 0%,
+      rgb(255 255 255 / 0.017) 34%,
+      transparent 54%,
+      rgb(0 0 0 / 0.045) 76%,
+      rgb(0 0 0 / 0.115) 100%
+    );
+}
+
+.site-header.glass-header::after {
+  content: "";
+
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+
+  z-index: 1;
+
+  height: 2px;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.025) 8%,
+    rgb(255 255 255 / 0.09) 32%,
+    rgb(255 255 255 / 0.14) 50%,
+    rgb(255 255 255 / 0.09) 68%,
+    rgb(255 255 255 / 0.025) 92%,
+    transparent 100%
+  );
+
+  opacity: 0.78;
+}
+
+/* ---------------------------------------------------------------------------
+ * Liquid backdrop
+ * ------------------------------------------------------------------------- */
+
 @layer components {
   .liquid-blob {
     position: absolute;
+
     border-radius: 9999px;
-    /* Blur is set once and never animated. */
+
     filter: blur(120px);
-    /* Hint the compositor once; paired with a fixed parent so it doesn't
-       promote a new layer per scroll. */
+
     will-change: transform;
   }
 
@@ -202,12 +310,15 @@
   }
 }
 
-/* Deliberately different periods (38/47/61s, near-coprime) so the three blobs
-   never resynchronise into an obvious loop. */
+/* ---------------------------------------------------------------------------
+ * Backdrop animation
+ * ------------------------------------------------------------------------- */
+
 @keyframes m2k-drift-a {
   from {
     transform: translate3d(0, 0, 0) scale(1);
   }
+
   to {
     transform: translate3d(12vw, 8vh, 0) scale(1.18);
   }
@@ -217,6 +328,7 @@
   from {
     transform: translate3d(0, 0, 0) scale(1.1);
   }
+
   to {
     transform: translate3d(-14vw, -6vh, 0) scale(0.92);
   }
@@ -226,23 +338,39 @@
   from {
     transform: translate3d(0, 0, 0) scale(0.95);
   }
+
   to {
     transform: translate3d(8vw, -12vh, 0) scale(1.25);
   }
 }
 
-/* --- Accessibility fallbacks ----------------------------------------------
- * These are not optional polish. backdrop-filter has a real cost for users
- * with vestibular sensitivity, low vision, or low-end GPUs. */
+/* ---------------------------------------------------------------------------
+ * Reduced transparency
+ * ------------------------------------------------------------------------- */
 
-/* Users who ask for less transparency get flat, fully opaque panels. */
 @media (prefers-reduced-transparency: reduce) {
   .glass-surface,
   .glass-surface-strong {
     background: var(--card) !important;
+
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+
     border-color: var(--border) !important;
+  }
+
+  .site-header.glass-header {
+    background-color: rgb(8 9 12 / 0.98) !important;
+
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+
+    border-bottom-color: rgb(255 255 255 / 0.1) !important;
+
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.075),
+      inset 0 -1px 0 rgb(0 0 0 / 0.7),
+      0 10px 30px rgb(0 0 0 / 0.4) !important;
   }
 
   .glass-plate {
@@ -250,14 +378,17 @@
   }
 
   .glass-sheen::after,
-  .glass-edge-light::before {
+  .glass-edge-light::before,
+  .site-header.glass-header::before,
+  .site-header.glass-header::after {
     display: none !important;
   }
 }
 
-/* Users who ask for less motion keep the material but lose the movement.
-   The blobs stay — they are the lighting, not an animation — they just stop
-   drifting. */
+/* ---------------------------------------------------------------------------
+ * Reduced motion
+ * ------------------------------------------------------------------------- */
+
 @media (prefers-reduced-motion: reduce) {
   .liquid-blob-a,
   .liquid-blob-b,
@@ -277,14 +408,27 @@
   .glass-sheen::after {
     display: none !important;
   }
+
+  .site-header {
+    transition: none !important;
+  }
 }
 
-/* Safari <18 and Firefox with backdrop-filter disabled: fall back to an
-   opaque card rather than an unreadable near-transparent one. */
-@supports not (backdrop-filter: blur(1px)) {
+/* ---------------------------------------------------------------------------
+ * Backdrop-filter fallback
+ * ------------------------------------------------------------------------- */
+
+@supports not (
+  ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)))
+) {
   .glass-surface,
   .glass-surface-strong {
     background: var(--card);
     border-color: var(--border);
+  }
+
+  .site-header.glass-header {
+    background-color: rgb(8 9 12 / 0.98);
+    border-bottom-color: rgb(255 255 255 / 0.1);
   }
 }

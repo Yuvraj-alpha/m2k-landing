@@ -16,32 +16,29 @@ export function SiteHeader() {
 
   return (
     <header
-      className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
-        scrolled
-          ? "glass-surface rounded-none border-x-0 border-t-0 shadow-lg"
-          : "border-b border-transparent bg-transparent",
-      )}
+      data-scrolled={scrolled ? "true" : "false"}
+      className={cn("site-header", scrolled && "glass-header")}
     >
       <div
         className="
-          grid h-16 w-full
+          site-header__content
+          grid h-20 w-full
           grid-cols-[1fr_auto_1fr]
           items-center
-          px-4 sm:h-20 sm:px-6 lg:px-8
+          px-4 sm:h-24 sm:px-6 lg:px-8
         "
       >
-        {/* Logo — extreme left */}
         <div className="justify-self-start">
           <Link
             href="/"
             className="focus-visible:ring-ring/60 rounded-lg outline-none focus-visible:ring-2"
           >
-            <BrandMark />
+            <div className="origin-left scale-110 sm:scale-115">
+              <BrandMark />
+            </div>
           </Link>
         </div>
 
-        {/* Navigation — exact center of viewport */}
         <nav
           aria-label="Main"
           className="hidden items-center justify-center gap-1 md:flex"
@@ -58,7 +55,7 @@ export function SiteHeader() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "relative rounded-lg px-3 py-2 font-medium transition-colors",
+                  "relative rounded-lg px-4 py-2 text-lg font-medium transition-colors",
                   "focus-visible:ring-ring/60 outline-none focus-visible:ring-2",
                   active
                     ? "text-foreground"
@@ -70,7 +67,7 @@ export function SiteHeader() {
                 {active && (
                   <span
                     aria-hidden
-                    className="bg-brand-lit absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full"
+                    className="bg-brand-lit absolute inset-x-4 -bottom-0.5 h-0.5 rounded-full"
                   />
                 )}
               </Link>
@@ -78,13 +75,12 @@ export function SiteHeader() {
           })}
         </nav>
 
-        {/* CTA — extreme right */}
         <div className="flex items-center gap-2 justify-self-end">
           <GlassButton
             asChild
             variant="solid"
-            size="sm"
-            className="max-sm:hidden"
+            size="md"
+            className="max-sm:hidden text-base"
           >
             <Link href="/contact">Request a Quote</Link>
           </GlassButton>

@@ -88,12 +88,12 @@ export function HeroSection() {
         <div className="w-full px-5 py-20 sm:px-8 lg:px-12 xl:px-16">
           <div className="max-w-5xl">
             {/* Eyebrow */}
-            <p className="text-brand-amber font-mono text-xs font-medium tracking-[0.28em] uppercase sm:text-sm">
+            <p className="text-brand-amber font-mono text-xs sm:text-base 2xl:text-lg font-medium tracking-[0.28em] uppercase">
               Manufacturing Excellence
             </p>
 
             {/* Brand */}
-            <h1 className="mt-5 max-w-5xl text-4xl sm:text-4xl lg:text-5xl xl:text-6xl leading-[0.98] font-extrabold tracking-[0.04em] text-white ">
+            <h1 className="mt-5 max-w-5xl text-4xl sm:text-4xl lg:text-5xl xl:text-6xl 3xl:text-7xl leading-[0.98] font-extrabold tracking-[0.04em] text-white ">
               <span className="text-brand-lit">M2K </span>PACKPRO
               <br />
               INDUSTRIES
