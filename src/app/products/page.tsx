@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 
 export default function ProductsPage() {
   return (
-    <>
+    <main className="pt-8">
       <section className="pt-16 sm:pt-24">
         <Container>
           <SectionHeading
@@ -93,6 +93,6 @@ export default function ProductsPage() {
       </section>
 
       <CtaBand />
-    </>
+    </main>
   );
 }

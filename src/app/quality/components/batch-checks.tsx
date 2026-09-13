@@ -42,7 +42,7 @@ export function BatchChecks() {
   return (
     <section className="py-16 sm:py-24">
       <Container>
-        <div className="grid items-center gap-10 lg:grid-cols-2">
+        <div className="grid items-center gap-10">
           <div>
             <SectionHeading
               eyebrow="Before dispatch"
@@ -53,10 +53,10 @@ export function BatchChecks() {
             <dl className="mt-8 space-y-4">
               {NAMED_CHECKS.map((check) => (
                 <GlassCard key={check.property} size="md">
-                  <dt className="font-heading font-extrabold">
+                  <dt className="font-heading font-extrabold sm:text-lg 2xl:text-xl">
                     {check.property}
                   </dt>
-                  <dd className="text-muted-foreground mt-1.5 text-sm leading-relaxed">
+                  <dd className="text-muted-foreground mt-1.5 text-xs sm:text-sm 2xl:text-base leading-relaxed">
                     {check.detail}
                   </dd>
                 </GlassCard>
@@ -64,11 +64,11 @@ export function BatchChecks() {
             </dl>
           </div>
 
-          <MediaFrame
+          {/* <MediaFrame
             asset={facility.windingStation}
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="aspect-4/5 w-full"
-          />
+          /> */}
         </div>
       </Container>
     </section>

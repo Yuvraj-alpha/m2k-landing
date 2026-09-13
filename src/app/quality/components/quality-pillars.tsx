@@ -60,8 +60,8 @@ export function QualityPillars() {
           {PILLARS.map(({ icon: Icon, title, claim, context }) => (
             <GlassCard key={title} size="lg" edgeLight>
               <div className="grid gap-6 md:grid-cols-[auto_1fr_1fr] md:items-start">
-                <span className="bg-brand/15 text-brand-lit flex size-12 shrink-0 items-center justify-center rounded-xl">
-                  <Icon className="size-6" aria-hidden />
+                <span className="bg-brand/50 text-brand-lit flex size-16 shrink-0 items-center justify-center rounded-xl">
+                  <Icon className="size-10" aria-hidden />
                 </span>
 
                 <div>

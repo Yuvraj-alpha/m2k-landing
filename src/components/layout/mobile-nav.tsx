@@ -53,13 +53,19 @@ export function MobileNav() {
 
       <SheetContent
         side="right"
-        className="glass-surface-strong w-[min(20rem,85vw)] border-l backdrop-blur-2xl"
+        className="
+          glass-surface-strong
+          z-[100]
+          w-[min(20rem,85vw)]
+          border-l
+          backdrop-blur-3xl
+      "
       >
         <SheetHeader className="border-border/60 border-b">
           {/* Radix requires a title for the dialog's accessible name. */}
-          <SheetTitle className="text-left">
+          {/* <SheetTitle className="text-left">
             <BrandMark />
-          </SheetTitle>
+          </SheetTitle> */}
         </SheetHeader>
 
         <nav aria-label="Main" className="flex flex-col gap-1 p-4">

@@ -15,21 +15,10 @@ export const metadata: Metadata = {
 
 export default function QualityPage() {
   return (
-    <>
-      <section className="pt-16 sm:pt-24">
-        <Container>
-          <SectionHeading
-            as="h1"
-            eyebrow="Quality"
-            title="A film either holds the load, or it doesn't"
-            lede="Stretch film is bought on price and judged on downtime. Everything below is about making sure the second one never becomes your problem."
-          />
-        </Container>
-      </section>
-
+    <main className="pt-8">
       <QualityPillars />
       <BatchChecks />
       <CtaBand />
-    </>
+    </main>
   );
 }

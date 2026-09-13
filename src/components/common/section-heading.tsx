@@ -27,21 +27,19 @@ export function SectionHeading({
 
   return (
     <div
-      className={cn(
-        "max-w-2xl",
-        centered && "mx-auto text-center",
-        className,
-      )}
+      className={cn("max-w-2xl", centered && "mx-auto text-center", className)}
     >
       {eyebrow && (
-        <p className="text-brand-amber font-mono text-xs tracking-[0.2em] uppercase">
+        <p className="text-brand-amber font-mono text-xs sm:text-base 2xl:text-lg tracking-[0.2em] uppercase">
           {eyebrow}
         </p>
       )}
       <Tag
         className={cn(
           "mt-4 font-extrabold text-balance",
-          Tag === "h1" ? "text-4xl sm:text-5xl lg:text-6xl" : "text-3xl sm:text-4xl",
+          Tag === "h1"
+            ? "text-4xl sm:text-5xl lg:text-6xl"
+            : "text-3xl sm:text-4xl",
         )}
       >
         {title}

@@ -12,8 +12,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+
 @import "./colors.css";
 @import "./glass.css";
+@import "./site-header.css";
 
 @custom-variant dark (&:is(.dark *));
 

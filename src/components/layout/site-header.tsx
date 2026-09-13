@@ -26,7 +26,7 @@ export function SiteHeader() {
           grid-cols-[1fr_auto]
           items-center
           px-4
-          sm:h-28 sm:px-6
+          sm:h-28 3xl:h-32 sm:px-6
           md:grid-cols-[1fr_auto_1fr]
           lg:px-8
         "
@@ -36,7 +36,7 @@ export function SiteHeader() {
             href="/"
             className="focus-visible:ring-ring/60 rounded-lg outline-none focus-visible:ring-2"
           >
-            <BrandMark className="h-12 sm:h-20 lg:h-24 xl:h-28 3xl:h-36 mt-2" />
+            <BrandMark className="h-12 sm:h-20 lg:h-24 xl:h-28 3xl:h-32 mt-2" />
           </Link>
         </div>
 

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <>
+    <main className="pt-8">
       <section className="pt-16 sm:pt-24">
         <Container>
           <SectionHeading
@@ -34,6 +34,6 @@ export default function ContactPage() {
           </div>
         </Container>
       </section>
-    </>
+    </main>
   );
 }

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <>
+    <main className="pt-8">
       <section className="pt-16 sm:pt-24">
         <Container>
           <SectionHeading
@@ -30,6 +30,6 @@ export default function AboutPage() {
       <AboutStory />
       <CertificationsBand />
       <CtaBand />
-    </>
+    </main>
   );
 }

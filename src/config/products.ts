@@ -50,8 +50,7 @@ export const products = [
       "Export consignments requiring load stability",
     ],
     features: [
-      "Pre-stretch performance reduces film consumption per pallet",
-      "Consistent gauge across the roll width",
+      "Industrial grade stretchability performance reduces film consumption per pallet",
       "Flush, precision-slit edges prevent telescoping",
       "Produced from 100% virgin LLDPE",
     ],
@@ -134,7 +133,7 @@ export const products = [
     features: [
       "Tuned for comfortable hand application",
       "Narrow widths available for bundling",
-      "Clings without adhesive residue",
+      "Excellent adhesive clinginess for long-lasting protection",
       "Produced from 100% virgin LLDPE",
     ],
     seo: {
@@ -161,6 +160,10 @@ export const products = [
       { label: "Available colours", value: "As per requirement" },
       { label: "Widths", value: "50 mm – 1000 mm" },
       { label: "Thickness", value: "12 – 80 micron" },
+      {
+        label: "Grades",
+        value: "Machine , manual and silage as per requirement",
+      },
     ],
     applications: [
       "Colour-coding loads by destination or customer",
