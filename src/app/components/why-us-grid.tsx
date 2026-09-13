@@ -37,15 +37,15 @@ export function WhyUsGrid() {
     <section className="py-16 sm:py-24">
       <Container>
         <div className="max-w-xl">
-          <p className="text-brand-amber font-mono text-xs tracking-[0.2em] uppercase">
+          <p className="text-brand-amber font-mono text-xs sm:text-base 2xl:text-lg tracking-[0.2em] uppercase">
             Why M2K
           </p>
           <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">
             The roll runs, or it doesn&rsquo;t
           </h2>
           <p className="text-muted-foreground mt-4 text-lg">
-            A film that snaps on a high-speed wrapper costs more in downtime than
-            it ever saved on price.
+            A film that snaps on a high-speed wrapper costs more in downtime
+            than it ever saved on price.
           </p>
         </div>
 

@@ -21,7 +21,7 @@ export function ProductShowcase() {
       <Container>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-xl">
-            <p className="text-brand-amber font-mono text-xs tracking-[0.2em] uppercase">
+            <p className="text-brand-amber font-mono text-xs sm:text-base 2xl:text-lg tracking-[0.2em] uppercase">
               The range
             </p>
             <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">
