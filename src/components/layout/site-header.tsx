@@ -25,7 +25,7 @@ export function SiteHeader() {
           grid h-20 w-full
           grid-cols-[1fr_auto_1fr]
           items-center
-          px-4 sm:h-24 sm:px-6 lg:px-8
+          px-4 sm:h-28 sm:px-6 lg:px-8
         "
       >
         <div className="justify-self-start">
@@ -33,7 +33,7 @@ export function SiteHeader() {
             href="/"
             className="focus-visible:ring-ring/60 rounded-lg outline-none focus-visible:ring-2"
           >
-            <BrandMark />
+            <BrandMark className="h-12 sm:h-20 lg:h-24 xl:h-28 3xl:h-36 mt-2" />
           </Link>
         </div>
 

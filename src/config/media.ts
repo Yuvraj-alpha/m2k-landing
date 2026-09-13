@@ -26,8 +26,8 @@ export const brand = {
   logoFull: {
     src: "https://qmsqiabk0m5xt15h.public.blob.vercel-storage.com/logo-inverted.png",
     alt: "M2K Packpro Industries — Experts in Special Film Manufacturing",
-    width: 1067,
-    height: 286,
+    width: 1200,
+    height: 321.65,
   },
   logoMark: {
     src: "",
