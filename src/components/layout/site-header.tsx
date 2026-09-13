@@ -36,7 +36,7 @@ export function SiteHeader() {
             href="/"
             className="focus-visible:ring-ring/60 rounded-lg outline-none focus-visible:ring-2"
           >
-            <BrandMark className="h-12 sm:h-20 lg:h-24 xl:h-28 3xl:h-32 mt-2" />
+            <BrandMark className="h-16 sm:h-20 lg:h-24 xl:h-28 3xl:h-32 mt-2" />
           </Link>
         </div>
 
