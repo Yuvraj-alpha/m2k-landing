@@ -23,9 +23,12 @@ export function SiteHeader() {
         className="
           site-header__content
           grid h-20 w-full
-          grid-cols-[1fr_auto_1fr]
+          grid-cols-[1fr_auto]
           items-center
-          px-4 sm:h-28 sm:px-6 lg:px-8
+          px-4
+          sm:h-28 sm:px-6
+          md:grid-cols-[1fr_auto_1fr]
+          lg:px-8
         "
       >
         <div className="justify-self-start">

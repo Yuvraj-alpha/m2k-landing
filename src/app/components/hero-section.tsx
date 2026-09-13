@@ -44,7 +44,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-[calc(100svh-4rem)] overflow-hidden sm:min-h-[calc(100svh-5rem)]">
+    <section className="relative min-h-[calc(100svh-0.1rem)] overflow-hidden sm:min-h-[calc(100svh-0.2rem)]">
       {/* Background carousel */}
       <div className="absolute inset-0">
         {slides.map((slide, index) => (
